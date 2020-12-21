@@ -1,18 +1,17 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Checkbox, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import {
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+} from '@material-ui/core';
 import { Edit as EditIcon } from '@material-ui/icons';
-
-type TodoItem = {
-  id: string;
-  title: string;
-  description?: string;
-  completed: boolean;
-};
-
-type Todos = {
-  todos: TodoItem[];
-};
+import TodoAdd from './TodoAdd';
+import { TodoItem, Todos } from '../../types/todo';
 
 const TODO_QUERY = gql`
   query {
@@ -45,9 +44,9 @@ const Todo: React.FC = () => {
         {data.todos.map((todo) => (
           <ListItem key={todo.id} button onClick={handleToggle(todo)}>
             <ListItemIcon>
-              <Checkbox checked={todo.completed}/>
+              <Checkbox checked={todo.completed} />
             </ListItemIcon>
-            <ListItemText primary={todo.title} secondary={todo.description}/>
+            <ListItemText primary={todo.title} secondary={todo.description} />
             <ListItemSecondaryAction onClick={handleEdit(todo)}>
               <IconButton>
                 <EditIcon />
@@ -56,6 +55,7 @@ const Todo: React.FC = () => {
           </ListItem>
         ))}
       </List>
+      <TodoAdd />
     </>
   );
 };
