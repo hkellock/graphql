@@ -11,7 +11,7 @@ module.exports = {
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
   ],
-  root: false,
+  root: true,
   env: {
     node: true,
     jest: true,

@@ -1,7 +1,8 @@
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { join } from 'path';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 const config: TypeOrmModuleOptions = {
-  type: "postgres",
+  type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: Number(process.env.POSTGRES_PORT),
   database: process.env.POSTGRES_DB,
@@ -9,14 +10,9 @@ const config: TypeOrmModuleOptions = {
   password: process.env.POSTGRES_PASSWORD,
   synchronize: true,
   logging: false,
-  entities: ["src/entity/**/*.ts"],
-  migrations: ["src/migration/**/*.ts"],
-  subscribers: ["src/subscriber/**/*.ts"],
-  cli: {
-    entitiesDir: "src/entity",
-    migrationsDir: "src/migration",
-    subscribersDir: "src/subscriber"
-  }
+  entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+  migrations: [join(__dirname, '**', '*.migration.{ts,js}')],
+  subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
 };
 
 export default config;
