@@ -1,27 +1,16 @@
-import Head from 'next/head'
+import Link from 'next/link'
+import Layout from '../components/Layout';
 import styles from '../styles/Home.module.css'
 
 const Home = () => (
-  <div className={styles.container}>
-    <Head>
-      <title>Todo app</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-
-    <main className={styles.main}>
+  <Layout>
       <h1 className={styles.title}>
         Todo app
       </h1>
-
       <p className={styles.description}>
-        Add some todos
+        View your todos here: <Link href='/todos/list' ><a>list</a></Link>.
       </p>
-    </main>
-
-    <footer className={styles.footer}>
-      Powered by a lot of open source code
-    </footer>
-  </div>
+  </Layout>
 );
 
 export default Home;
