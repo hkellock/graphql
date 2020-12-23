@@ -1,18 +1,10 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  Checkbox,
-  Fab,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-} from '@material-ui/core';
-import { Edit as EditIcon, Add as AddIcon } from '@material-ui/icons';
+import { Fab, List } from '@material-ui/core';
+import { Add as AddIcon } from '@material-ui/icons';
 import { Todo as TodoItem, TodoInput, useSaveTodoMutation, useTodosQuery } from '../types/generated-types-and-hooks';
 import EditDialog from './EditDialog';
+import TodoListItem from './TodoListItem';
 
 const Todo: React.FC = () => {
   const { loading, error, data } = useTodosQuery();
@@ -44,21 +36,16 @@ const Todo: React.FC = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error || !data) return <p>Error!</p>;
+
   return (
     <>
       <List>
         {data.todos.map((todo) => (
-          <ListItem key={todo.id} button onClick={handleToggle(todo)}>
-            <ListItemIcon>
-              <Checkbox checked={todo.completed} />
-            </ListItemIcon>
-            <ListItemText primary={todo.title} secondary={todo.description} />
-            <ListItemSecondaryAction onClick={handleEditStart(todo)}>
-              <IconButton>
-                <EditIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
+          <TodoListItem 
+            todo={todo} 
+            handleToggle={handleToggle} 
+            handleEditStart={handleEditStart} 
+          />
         ))}
       </List>
       <Fab color="primary" onClick={handleAddStart}>

@@ -6,11 +6,7 @@ import {
   DialogContent,
   TextField,
 } from '@material-ui/core';
-import {
-  Cancel as CancelIcon,
-  Send as SendIcon,
-} from '@material-ui/icons';
-import { Todo as TodoItem, TodoInput, useSaveTodoMutation } from '../types/generated-types-and-hooks';
+import { Todo as TodoItem, TodoInput, useRemoveTodoMutation, useSaveTodoMutation } from '../types/generated-types-and-hooks';
 
 type EditDialogProps = {
   todo?: TodoItem;
@@ -27,6 +23,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
   }, [todo]);
 
   const [saveTodo, { loading, error, data }] = useSaveTodoMutation();
+  const [removeTodo] = useRemoveTodoMutation();
 
   const handleClose = () => {
     setTodo(undefined);
@@ -34,7 +31,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
 
   const handleSave = () => {
     if (!todo) {
-      throw new Error('Unknown error while saving todo item');
+      throw new Error('Unknown error while saving todo item.');
     }
     const editedTodo: TodoInput = {
       id: todo.id,
@@ -45,6 +42,14 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
     saveTodo({ variables: { todo: editedTodo } });
     handleClose();
   };
+
+  const handleRemove = () => {
+    if (!todo) {
+      throw new Error('Unknown error while removing todo item.');
+    }
+    removeTodo({ variables: { id: todo.id } });
+    handleClose();
+  }
 
   if (loading) return <p>Saving todo...</p>;
   if (error) return <p>Error while saving todo: {error.message}</p>;
@@ -71,11 +76,15 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button color="secondary" onClick={handleClose}>
-          <CancelIcon />
+        <Button variant="outlined" color="secondary" onClick={handleRemove}>
+          Remove
         </Button>
-        <Button color="primary" onClick={handleSave}>
-          <SendIcon />
+        <div style={{flex: '1 0 0'}} />
+        <Button variant="outlined" color="default" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="outlined" color="primary" onClick={handleSave}>
+          Save
         </Button>
       </DialogActions>
     </Dialog>
