@@ -19,4 +19,9 @@ export class TodoService {
     const todo = this.todoRepository.create(input);
     return this.todoRepository.save(todo);
   }
+
+  async remove(id: string): Promise<string> {
+    await this.todoRepository.delete(id);
+    return id;
+  }
 }

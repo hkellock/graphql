@@ -16,4 +16,9 @@ export class TodoResolver {
   async createTodo(@Args('input') input: TodoInput) {
     return await this.todoService.create(input);
   }
+
+  @Mutation(() => String!)
+  async removeTodo(@Args('id') id: string) {
+    return await this.todoService.remove(id);
+  }
 }
