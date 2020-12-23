@@ -11,21 +11,10 @@ import {
 } from '@material-ui/core';
 import { Edit as EditIcon } from '@material-ui/icons';
 import TodoAdd from './TodoAdd';
-import { TodoItem, Todos } from '../types/todo';
-
-const TODO_QUERY = gql`
-  query {
-    todos {
-      id
-      title
-      description
-      completed
-    }
-  }
-`;
+import { Todo as TodoItem, useTodosQuery } from '../types/generated-types-and-hooks';
 
 const Todo: React.FC = () => {
-  const { loading, error, data } = useQuery<Todos>(TODO_QUERY);
+  const { loading, error, data } = useTodosQuery();
 
   if (loading) return <p>Loading...</p>;
   if (error || !data) return <p>Error!</p>;

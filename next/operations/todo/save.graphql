@@ -1,0 +1,8 @@
+mutation saveTodo($todo: TodoInput!) {
+  createTodo(input: $todo) {
+    id
+    title
+    description
+    completed
+  }
+}

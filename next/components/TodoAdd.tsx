@@ -1,5 +1,4 @@
 import React from 'react';
-import { gql, useMutation } from '@apollo/client';
 import {
   Button,
   Dialog,
@@ -14,23 +13,7 @@ import {
   Send as SendIcon,
 } from '@material-ui/icons';
 import { v4 as uuidv4 } from 'uuid';
-import { TodoItem, TodoInput } from '../types/todo';
-
-const TODO_ADD_MUTATION = gql`
-  mutation saveTodo($todo: TodoInput!) {
-    createTodo(input: $todo) {
-      id
-      title
-      description
-      completed
-    }
-  }
-`;
-
-type AddMutation = {
-  createTodo: TodoInput;
-  todo: TodoItem;
-};
+import { Todo as TodoItem, useSaveTodoMutation } from '../types/generated-types-and-hooks';
 
 const TodoAdd: React.FC = () => {
   const [open, setOpen] = React.useState(false);
@@ -39,9 +22,7 @@ const TodoAdd: React.FC = () => {
     undefined,
   );
 
-  const [saveTodo, { loading, error, data }] = useMutation<AddMutation>(
-    TODO_ADD_MUTATION,
-  );
+  const [saveTodo, { loading, error, data }] = useSaveTodoMutation();
 
   const handleAddStart = () => {
     setOpen(true);
