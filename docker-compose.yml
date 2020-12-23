@@ -12,6 +12,18 @@ services:
       - "3000:3000"
     depends_on:
       - api
+  next:
+    build: ./next
+    command: yarn dev
+    restart: on-failure
+    environment:
+      REACT_APP_LOCAL: local
+    volumes:
+      - ./next:/usr/src/app
+    ports:
+      - "4000:3000"
+    depends_on:
+      - api
   api:
     build:
       context: ./api
