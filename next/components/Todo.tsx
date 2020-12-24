@@ -2,21 +2,28 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Fab, List } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
-import { Todo as TodoItem, TodoInput, useSaveTodoMutation, useTodosQuery } from '../types/generated-types-and-hooks';
+import {
+  Todo as TodoItem,
+  TodoInput,
+  useSaveTodoMutation,
+  useTodosQuery,
+} from '../types/generated-types-and-hooks';
 import EditDialog from './EditDialog';
 import TodoListItem from './TodoListItem';
 
 const Todo: React.FC = () => {
   const { loading, error, data } = useTodosQuery();
   const [saveTodo] = useSaveTodoMutation();
-  const [selectedTodo, setSelectedTodo] = React.useState<TodoItem | undefined>(undefined);
+  const [selectedTodo, setSelectedTodo] = React.useState<TodoItem | undefined>(
+    undefined,
+  );
 
   const handleAddStart = () => {
     const newTodo: TodoItem = {
       id: uuidv4(),
       title: '',
-      completed: false
-    }
+      completed: false,
+    };
     setSelectedTodo(newTodo);
   };
 
@@ -29,8 +36,8 @@ const Todo: React.FC = () => {
       id: todo.id,
       title: todo.title,
       description: todo.description,
-      completed: !todo.completed
-    }
+      completed: !todo.completed,
+    };
     saveTodo({ variables: { todo: toggledItem } });
   };
 
@@ -41,10 +48,10 @@ const Todo: React.FC = () => {
     <>
       <List>
         {data.todos.map((todo) => (
-          <TodoListItem 
-            todo={todo} 
-            handleToggle={handleToggle} 
-            handleEditStart={handleEditStart} 
+          <TodoListItem
+            todo={todo}
+            handleToggle={handleToggle}
+            handleEditStart={handleEditStart}
           />
         ))}
       </List>

@@ -8,21 +8,26 @@ import {
   makeStyles,
   TextField,
 } from '@material-ui/core';
-import { Todo as TodoItem, TodoInput, useRemoveTodoMutation, useSaveTodoMutation } from '../types/generated-types-and-hooks';
+import {
+  Todo as TodoItem,
+  TodoInput,
+  useRemoveTodoMutation,
+  useSaveTodoMutation,
+} from '../types/generated-types-and-hooks';
 import { Cancel, Delete, Save } from '@material-ui/icons';
 import DialogButton from './DialogButton';
 
 type EditDialogProps = {
   todo?: TodoItem;
   setTodo: Dispatch<SetStateAction<TodoItem | undefined>>;
-}
+};
 
-const useStyles = makeStyles((theme) => 
+const useStyles = makeStyles((theme) =>
   createStyles({
     button: {
-      margin: theme.spacing(1)
-    }
-  })
+      margin: theme.spacing(1),
+    },
+  }),
 );
 
 const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
@@ -50,8 +55,8 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
       id: todo.id,
       title,
       description,
-      completed: todo.completed
-    }
+      completed: todo.completed,
+    };
     saveTodo({ variables: { todo: editedTodo } });
     handleClose();
   };
@@ -62,7 +67,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
     }
     removeTodo({ variables: { id: todo.id } });
     handleClose();
-  }
+  };
 
   if (loading) return <p>Saving todo...</p>;
   if (error) return <p>Error while saving todo: {error.message}</p>;
@@ -89,10 +94,25 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
         />
       </DialogContent>
       <DialogActions>
-        <DialogButton color="secondary" onClick={handleRemove} icon={<Delete />} text="Remove" />
-        <div style={{flex: '1 0 0'}} />
-        <DialogButton color="default" onClick={handleClose} icon={<Cancel />} text="Cancel" />
-        <DialogButton color="primary" onClick={handleSave} icon={<Save />} text="Save" />
+        <DialogButton
+          color="secondary"
+          onClick={handleRemove}
+          icon={<Delete />}
+          text="Remove"
+        />
+        <div style={{ flex: '1 0 0' }} />
+        <DialogButton
+          color="default"
+          onClick={handleClose}
+          icon={<Cancel />}
+          text="Cancel"
+        />
+        <DialogButton
+          color="primary"
+          onClick={handleSave}
+          icon={<Save />}
+          text="Save"
+        />
       </DialogActions>
     </Dialog>
   );

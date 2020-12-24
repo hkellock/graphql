@@ -23,15 +23,15 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
-    "prettier": "^2.1.2"
+    "prettier": "2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --check \"src/**/*.ts(x)\"",
-    "format": "prettier --write \"src/**/*.ts(x)\"",
+    "prettier": "prettier --check 'src/**/*.{ts,tsx}'",
+    "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint \"src/**/*.ts(x)\" --fix"
   },
   "eslintConfig": {
