@@ -1,19 +1,32 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Button,
+  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
+  makeStyles,
   TextField,
 } from '@material-ui/core';
 import { Todo as TodoItem, TodoInput, useRemoveTodoMutation, useSaveTodoMutation } from '../types/generated-types-and-hooks';
+import { Cancel, Delete, Save } from '@material-ui/icons';
+import DialogButton from './DialogButton';
 
 type EditDialogProps = {
   todo?: TodoItem;
   setTodo: Dispatch<SetStateAction<TodoItem | undefined>>;
 }
 
+const useStyles = makeStyles((theme) => 
+  createStyles({
+    button: {
+      margin: theme.spacing(1)
+    }
+  })
+);
+
 const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
+  const styles = useStyles();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -76,16 +89,10 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" color="secondary" onClick={handleRemove}>
-          Remove
-        </Button>
+        <DialogButton color="secondary" onClick={handleRemove} icon={<Delete />} text="Remove" />
         <div style={{flex: '1 0 0'}} />
-        <Button variant="outlined" color="default" onClick={handleClose}>
-          Cancel
-        </Button>
-        <Button variant="outlined" color="primary" onClick={handleSave}>
-          Save
-        </Button>
+        <DialogButton color="default" onClick={handleClose} icon={<Cancel />} text="Cancel" />
+        <DialogButton color="primary" onClick={handleSave} icon={<Save />} text="Save" />
       </DialogActions>
     </Dialog>
   );
