@@ -1,37 +1,26 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
-  Button,
-  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
-  makeStyles,
   TextField,
 } from '@material-ui/core';
+import { Cancel, Delete, Save } from '@material-ui/icons';
+import DialogButton from './DialogButton';
+import { editTodo, removeTodo } from '../lib/apolloClient';
 import {
   Todo as TodoItem,
   TodoInput,
   useRemoveTodoMutation,
   useSaveTodoMutation,
 } from '../types/generated-types-and-hooks';
-import { Cancel, Delete, Save } from '@material-ui/icons';
-import DialogButton from './DialogButton';
 
 type EditDialogProps = {
   todo?: TodoItem;
   setTodo: Dispatch<SetStateAction<TodoItem | undefined>>;
 };
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    button: {
-      margin: theme.spacing(1),
-    },
-  }),
-);
-
 const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
-  const styles = useStyles();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -40,8 +29,8 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
     setDescription(todo?.description ?? '');
   }, [todo]);
 
-  const [saveTodo, { loading, error, data }] = useSaveTodoMutation();
-  const [removeTodo] = useRemoveTodoMutation();
+  const [saveMutation, { loading, error }] = useSaveTodoMutation();
+  const [removeMutation] = useRemoveTodoMutation();
 
   const handleClose = () => {
     setTodo(undefined);
@@ -57,7 +46,11 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
       description,
       completed: todo.completed,
     };
-    saveTodo({ variables: { todo: editedTodo } });
+    const input: TodoInput = { ...editedTodo };
+    saveMutation({
+      variables: { todo: input },
+      update: () => editTodo(editedTodo),
+    });
     handleClose();
   };
 
@@ -65,7 +58,10 @@ const EditDialog: React.FC<EditDialogProps> = ({ todo, setTodo }) => {
     if (!todo) {
       throw new Error('Unknown error while removing todo item.');
     }
-    removeTodo({ variables: { id: todo.id } });
+    removeMutation({
+      variables: { id: todo.id },
+      update: () => removeTodo(todo),
+    });
     handleClose();
   };
 
